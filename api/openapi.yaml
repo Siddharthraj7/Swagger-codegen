@@ -1,0 +1,130 @@
+openapi: 3.0.0
+info:
+  title: Student API
+  description: Student API using swagger.io by Siddharth Raj
+  contact:
+    name: Siddharth Raj
+    email: siddharth.raj2019@vitbhopal.ac.in
+  version: 1.0.0
+servers:
+- url: http://devapi.com
+paths:
+  /student:
+    description: Student Resource
+    get:
+      description: Operation to fetch all the students
+      operationId: studentGET
+      parameters:
+      - name: studentname
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+          example: Ritik
+      responses:
+        "200":
+          description: Success response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/students'
+      x-swagger-router-controller: Default
+    put:
+      description: Updates an existing students
+      operationId: studentPUT
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/student'
+      responses:
+        "201":
+          description: Record successfully updated
+      x-swagger-router-controller: Default
+  /student{id}:
+    description: Deletes a student record
+    delete:
+      operationId: studentidDELETE
+      parameters:
+      - name: id
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+      responses:
+        "200":
+          description: Successfully deletes the record
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/student'
+      x-swagger-router-controller: Default
+  /student{find}:
+    description: Get the student based on path parameter
+    get:
+      operationId: studentfindGET
+      parameters:
+      - name: find
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success response with path parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/students'
+      x-swagger-router-controller: Default
+components:
+  schemas:
+    student:
+      type: object
+      properties:
+        StudentID:
+          type: integer
+          example: 3
+        StudentName:
+          type: string
+          example: Sid
+        Standard:
+          type: string
+          example: Sixth
+        Fees:
+          type: integer
+          example: 5000
+      example:
+        Standard: Sixth
+        Fees: 5000
+        StudentName: Sid
+        StudentID: 3
+    students:
+      type: array
+      items:
+        $ref: '#/components/schemas/students_inner'
+    students_inner:
+      properties:
+        StudentID:
+          type: integer
+          example: 3
+        StudentName:
+          type: string
+          example: Shri
+        Standard:
+          type: string
+          example: Tenth
+        Fees:
+          type: integer
+          example: 10000
+      example:
+        Standard: Tenth
+        Fees: 10000
+        StudentName: Shri
+        StudentID: 3
